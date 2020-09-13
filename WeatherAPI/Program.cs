@@ -23,6 +23,7 @@ namespace WeatherAPI
                     .GetAwaiter().GetResult();
                 var root = JsonConvert.DeserializeObject<Root>(weatherString);
 
+
                 Console.WriteLine($"City Name: {root.name} " +
                                   $"Time zone: {(root.timezone) / 3600} " +
                                   $"°C: {Math.Round(root.main.temp_max - 273.15)} " +
@@ -32,6 +33,7 @@ namespace WeatherAPI
                                   $"Pressure: {root.main.pressure}" + 
                                   $"Sunrise : {root.sys.sunrise} Icon : {weather.icon}");
                 Console.WriteLine("Do you want to exit ? ");
+                // testing git repos
                 string exitClick = Console.ReadLine();
                 if (exitClick == "exit")
                 {
@@ -43,15 +45,16 @@ namespace WeatherAPI
                 }
             }
 
+              
         }
 
         static void Main(string[] args)
         {
-            
 
 
-            jsonSerialiser();
-           
+            var result = Math.Round(9.7);
+
+            Console.WriteLine(result);
         }
     }
 
