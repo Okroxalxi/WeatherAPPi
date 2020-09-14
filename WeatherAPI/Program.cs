@@ -7,16 +7,17 @@ namespace WeatherAPI
 {
     class Program
     {
-        public static async void jsonSerialiser()
+        const string apiKey = "995c5315f51d5cdacb0eb720472f2085";
+        static HttpClient httpClient = new HttpClient();
+        static Weather weather = new Weather();
+        public static async void jsonSearchCity()
         {
-            const string apiKey = "995c5315f51d5cdacb0eb720472f2085";
-            HttpClient httpClient = new HttpClient();
+           
             bool looping = true;
             while (looping)
             {
                 Console.WriteLine("Enter city name");
                 var city = Console.ReadLine();
-                Weather weather = new Weather();
                 var weatherString = httpClient.GetAsync($"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={apiKey}")
                     .GetAwaiter().GetResult()
                     .Content.ReadAsStringAsync()
@@ -30,8 +31,7 @@ namespace WeatherAPI
                                   $"Feels Like: {Math.Round(root.main.feels_like - 273.15)} " +
                                   $"Wind: {root.wind.speed} " +
                                   $"Humidity: {root.main.humidity} " +
-                                  $"Pressure: {root.main.pressure}" + 
-                                  $"Sunrise : {root.sys.sunrise} Icon : {weather.icon}");
+                                  $"Pressure: {root.main.pressure}");
                 Console.WriteLine("Do you want to exit ? ");
                 // testing git repos
                 string exitClick = Console.ReadLine();
@@ -47,14 +47,27 @@ namespace WeatherAPI
 
               
         }
+        public static async void jsonSearchCoordinates()
+        {
+            Console.WriteLine("Please enter the latitude :");
+            var latitudesearch = Console.ReadLine();
+            Console.WriteLine("longitude : ");
+            var longitudesearch = Console.ReadLine();
+            var citySearchLongLat = httpClient.GetAsync($"https://api.openweathermap.org/data/2.5/weather?lat={latitudesearch}&lon={longitudesearch}&appid={apiKey}")
+                .GetAwaiter().GetResult()
+                .Content.ReadAsStringAsync()
+                .GetAwaiter().GetResult();
+            var root = JsonConvert.DeserializeObject<Root>(citySearchLongLat);
+
+            Console.WriteLine($"City Name : {root.name}  °C: { Math.Round(root.main.temp_max - 273.15)}");
+        }
 
         static void Main(string[] args)
         {
 
+            jsonSearchCoordinates();
 
-            var result = Math.Round(9.7);
 
-            Console.WriteLine(result);
         }
     }
 
